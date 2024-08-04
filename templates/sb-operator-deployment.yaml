@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shapeblock.fullname" . }}-sb-operator
+  labels:
+    {{- include "shapeblock.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "shapeblock.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "shapeblock.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "shapeblock.serviceAccountName" . }}
+      containers:
+      - name: sb-operator
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        env:
+          - name: SB_URL
+            value: {{ .Values.sb_url }}
+          - name: CLUSTER_ID
+            value: {{ .Values.cluster_id }}

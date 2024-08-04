@@ -1,0 +1,49 @@
+# Ignore Helm packages
+*.tgz
+
+# Ignore dependency charts
+/charts/*
+
+# Allow tracking of the .lock file for Helm dependencies
+!charts/.helmignore
+
+
+# Ignore Helm template output
+helm-template-output.yaml
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+
+# Ignore logs
+*.log
+
+# Ignore local Helm repository configuration
+/local
+
+# Ignore Kubernetes config file
+kubeconfig
+
+# Ignore Helm secrets files
+*.secrets.yaml
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules (if any JavaScript or Node.js scripts are included)
+node_modules/
+
+# Ignore build directories (if any build scripts are included)
+dist/
+build/
+
+# Ignore Helm plugin directory
+.helm/plugins/
+
